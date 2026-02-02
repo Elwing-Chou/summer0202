@@ -13,3 +13,11 @@ com = random.randint(0, 2)
 trans = ["剪刀", "石頭", "布"]
 print("我:" + trans[my])
 print("電腦:" + trans[com])
+
+# %(mod): 餘數
+if my == (com + 1) % 3:
+    print("I win!!!")
+elif com == (my + 1) % 3:
+    print("Com win!!!")
+else:
+    print("Even!!!")
