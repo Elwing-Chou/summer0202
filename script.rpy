@@ -1,36 +1,20 @@
-﻿# 遊戲腳本位於此檔案。
-
-# 宣告該遊戲使用的角色。 color 參數
-# 為角色的名稱著色。
-
+﻿
 define usagi = Character("烏薩奇")
 define e = Character("[player]")
 
-
-# 遊戲從這裡開始。
-
 label start:
 
-    # 顯示背景。 預設情況下，它使用佔位符，但您可以
-    # 將檔案（名為 "bg room.png" 或 "bg room.jpg"）新增至
-    # images 目錄來顯示它。
-
-    scene bg forest
-
-    # 這顯示了一個角色精靈。 使用了佔位符，但您可以
-    # 透過將名為 "eileen happy.png" 的檔案
-    # 新增至 images 目錄來取代它。
+    scene bg forest:
+        xysize(1920, 1080)
 
     show usagi normal at center:
         xysize(1000, 1000)
 
-    # 這些顯示對話行。
     "來玩個遊戲吧"
 
 label name:
     usagi "你叫什麼?"
     $ player = renpy.input("請輸入姓名")
-    # 遊戲結束。
 
     usagi "你是叫[player]嗎?"
     menu:
@@ -38,4 +22,46 @@ label name:
             e "是的!"
         "否":
             jump name
-    return
+
+default win = 0
+default lose = 0
+default even = 0
+
+label game:
+    menu:
+        "剪刀":
+            $ my = 0
+        "石頭":
+            $ my = 1
+        "布":
+            $ my = 2
+
+    $ com = renpy.random.randint(0, 2)
+
+    if com == 0:
+        show usagi scissor at center:
+            xysize(1000, 1000)
+        usagi "剪刀!!!"
+    elif com == 1:
+        show usagi stone  at center:
+            xysize(1000, 1000)
+        usagi "石頭!!!"
+    else:
+        show usagi paper at center:
+            xysize(1000, 1000)
+        usagi "布!!!"
+
+    if my == (com + 1) % 3:
+        $ win = win + 1
+    elif com == (my + 1) % 3:
+        $ lose = lose + 1
+    else:
+        $ even = even + 1
+
+    if win == 3:
+        usagi "你贏了!!!"
+    elif lose == 3:
+        usagi "你輸了???"
+    else:
+        usagi "贏:[win] 輸:[lose] 平:[even]"
+        jump game
