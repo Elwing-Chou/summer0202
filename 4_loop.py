@@ -20,3 +20,10 @@ scores = [20, 30, 40]
 for s in scores:
     total = total + s
 print(total)
+
+# 1 + 2 + 3...+ 10
+# range(5): [0, 1, 2, 3, 4]
+total = 0
+for i in range(10):
+    total = total + (i + 1)
+print(total)
