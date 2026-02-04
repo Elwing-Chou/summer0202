@@ -12,7 +12,8 @@ def get_font(size):
 
 FONT_UI = get_font(32)
 #設定視窗
-width, height = 800, 800
+width, height = 800, 880
+dif = 80
 # 產生視窗
 screen = pg.display.set_mode([width, height])
 # 設定遊戲標題
@@ -21,6 +22,9 @@ pg.display.set_caption("象棋")
 bg = pg.Surface(screen.get_size())
 # 把畫布填滿某個顏色
 bg.fill([199, 167, 82])
+# 1. 線
+for i in range(10):
+    pg.draw.line(bg, [0, 0 ,0], [dif, i*dif+dif], [width-dif, i*dif+dif], 2)
 screen.blit(bg, [0, 0])
 # 對畫面進行更新(才會真的秀出來)
 pg.display.update()
