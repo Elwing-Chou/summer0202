@@ -1,0 +1,16 @@
+i = 0
+while i < 10:
+    print("hello")
+    i = i + 1
+
+# 清單 []
+# 編號: 0 1 2
+# 查詢: 清單名字[編號]
+# i 0 1 2
+total = 0
+scores = [20, 30, 40]
+i = 0
+while i < len(scores):
+    total = total + scores[i]
+    i = i + 1
+print(total)
