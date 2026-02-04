@@ -25,7 +25,29 @@ for i in range(10):
 
 # 準備我棋盤上每個位置的角色
 board_role = [[-1] * 9 for i in range(10)]
+role = [
+    ["將", "帥"],
+    ["士", "仕"],
+    ["象", "相"],
+    ["馬", "傌"],
+    ["車", "俥"],
+    ["包", "炮"],
+    ["卒", "兵"]
+]
+# [腳色(0-6), 陣營(0or1)]
+# 將/帥
+board_role[0][4] = [0, 0]
+board_role[9][4] = [0, 1]
 
+board_role[0][3] = [1, 0]
+board_role[0][5] = [1, 0]
+board_role[9][3] = [1, 1]
+board_role[9][5] = [1, 1]
+
+board_role[0][2] = [2, 0]
+board_role[0][6] = [2, 0]
+board_role[9][2] = [2, 1]
+board_role[9][6] = [2, 1]
 
 # 產生視窗
 screen = pg.display.set_mode([width, height])
@@ -50,7 +72,28 @@ pg.draw.line(bg, [0, 0, 0], [6*dif, 1*dif], [4*dif, 3*dif], 2)
 pg.draw.line(bg, [0, 0, 0], [4*dif, 8*dif], [6*dif, 10*dif], 2)
 pg.draw.line(bg, [0, 0, 0], [6*dif, 8*dif], [4*dif, 10*dif], 2)
 
-
+# 畫棋子
+# 走過棋盤
+for i in range(10):
+    for j in range(9):
+        # 不等於-1: 代表我剛剛有設定角色
+        if not board_role[i][j] == -1:
+            # 腳色, 陣營
+            r, side = board_role[i][j]
+            x, y = board_coord[i][j]
+            # 不同陣營, 設定不同顏色
+            if side == 0:
+                c = [0, 0, 0]
+                fc = [255, 255, 255]
+            else:
+                c = [255, 255, 255]
+                fc = [0, 0, 0]
+            # 背景/顏色/圓心/半徑
+            pg.draw.circle(bg, c, [x, y],35)
+            # 準備填上去的字
+            t = FONT_UI.render(role[r][side], 1, fc)
+            # 背景(bg)上面疊上t
+            bg.blit(t, t.get_rect(center=[x, y]))
 
 screen.blit(bg, [0, 0])
 # 對畫面進行更新(才會真的秀出來)
