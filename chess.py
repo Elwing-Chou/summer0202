@@ -25,6 +25,20 @@ bg.fill([199, 167, 82])
 # 1. 線
 for i in range(10):
     pg.draw.line(bg, [0, 0 ,0], [dif, i*dif+dif], [width-dif, i*dif+dif], 2)
+
+for i in range(9):
+    pg.draw.line(bg, [0, 0, 0], [i*dif+dif, dif], [i*dif+dif, 5*dif], 2)
+
+for i in range(9):
+    pg.draw.line(bg, [0, 0, 0], [i*dif+dif, 6*dif], [i*dif+dif, 10*dif], 2)
+
+pg.draw.line(bg, [0, 0, 0], [4*dif, 1*dif], [6*dif, 3*dif], 2)
+pg.draw.line(bg, [0, 0, 0], [6*dif, 1*dif], [4*dif, 3*dif], 2)
+pg.draw.line(bg, [0, 0, 0], [4*dif, 8*dif], [6*dif, 10*dif], 2)
+pg.draw.line(bg, [0, 0, 0], [6*dif, 8*dif], [4*dif, 10*dif], 2)
+
+
+
 screen.blit(bg, [0, 0])
 # 對畫面進行更新(才會真的秀出來)
 pg.display.update()
