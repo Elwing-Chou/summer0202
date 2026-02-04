@@ -14,3 +14,9 @@ while i < len(scores):
     total = total + scores[i]
     i = i + 1
 print(total)
+
+total = 0
+scores = [20, 30, 40]
+for s in scores:
+    total = total + s
+print(total)
