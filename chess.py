@@ -14,6 +14,19 @@ FONT_UI = get_font(32)
 #設定視窗
 width, height = 800, 880
 dif = 80
+
+# 準備我棋盤上每個位置對應的座標
+board_coord = [[-1] * 9 for i in range(10)]
+for i in range(10):
+    for j in range(9):
+        x = j * dif + dif
+        y = i * dif + dif
+        board_coord[i][j] = [x, y]
+
+# 準備我棋盤上每個位置的角色
+board_role = [[-1] * 9 for i in range(10)]
+
+
 # 產生視窗
 screen = pg.display.set_mode([width, height])
 # 設定遊戲標題
