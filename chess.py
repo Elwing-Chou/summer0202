@@ -16,7 +16,9 @@ width, height = 800, 880
 dif = 80
 
 # 現在被選擇的棋子(None: 無)([i, j])
-chosen = [0, 0]
+chosen = None
+# 回合
+round = 0
 # 準備我棋盤上每個位置對應的座標
 board_coord = [[-1] * 9 for i in range(10)]
 for i in range(10):
@@ -74,6 +76,62 @@ for i in range(5):
 screen = pg.display.set_mode([width, height])
 # 設定遊戲標題
 pg.display.set_caption("象棋")
+
+def move(oldi, oldj, newi, newj):
+    global round
+    # 把舊的位置的 腳色還有陣營拿出來
+    r, s = board_role[oldi][oldj]
+    # 包的處理
+    if r == 5:
+        # 如果移動不是直線, 那根本不用做
+        # 如果兩個都不等於, 那就不是平移
+        if not oldi == newi and not oldj == newj:
+            pass
+        # 是平移的話
+        else:
+            # 備份一份, 等一下才能設定
+            oldi_b, oldj_b, newi_b, newj_b = oldi, oldj, newi, newj
+            # 新的位置沒東西, 移動過程不能碰到東西
+            if board_role[newi][newj] == -1:
+                # 如果新的位置比較大, 我做個交換
+                oldi, newi = min(oldi, newi), max(oldi, newi)
+                oldj, newj = min(oldj, newj), max(oldj, newj)
+                # 檢查這區間有沒有別人
+                count = 0
+                for i in range(oldi, newi+1):
+                    for j in range(oldj, newj+1):
+                        # 有別人, 就直接不做
+                        if not board_role[i][j] == -1:
+                            count = count + 1
+                # 過來就代表中間沒別人, 真的走
+                # 次數是1是因為有我本人
+                if count == 1:
+                    board_role[newi_b][newj_b] = [r, s]
+                    board_role[oldi_b][oldj_b] = -1
+                    round = round + 1
+            # 新的位置有敵方, 平移的過程要遇到一個任何陣營的棋子
+            else:
+                # 拿出新的位置的陣營
+                nr, ns = board_role[newi][newj]
+                # 如果新位置陣營跟我舊位置陣營一樣, 不做事
+                if ns == s:
+                    return
+                else:
+                    oldi, newi = min(oldi, newi), max(oldi, newi)
+                    oldj, newj = min(oldj, newj), max(oldj, newj)
+                    # 檢查這區間是不是只有一個棋子
+                    count = 0
+                    for i in range(oldi, newi + 1):
+                        for j in range(oldj, newj + 1):
+                            # 遇到人就把次數+1
+                            if not board_role[i][j] == -1:
+                                count = count + 1
+                    # 如果只有一個, 走
+                    # 加自己 加對面 是三個
+                    if count == 3:
+                        board_role[newi_b][newj_b] = [r, s]
+                        board_role[oldi_b][oldj_b] = -1
+                        round = round + 1
 
 def draw_board():
     # 建立畫布bg
@@ -146,13 +204,27 @@ while running:
                     d = abs(x-cx) + abs(y-cy)
                     if d < mind:
                         mind, minpos = d, [i, j]
-            # 如果你算出的位置有棋子, 就要有選取框
             mini, minj = minpos
-            if not board_role[mini][minj] == -1:
-                chosen = minpos
-            # 如果沒棋子 把選取弄掉
-            else:
+            # 如果已經有選取了, 這時候的點擊就是移動
+            if not chosen == None:
+                i, j = chosen
+                # 把新位置設成我們剛選的腳色
+                # board_role[mini][minj] = board_role[i][j]
+                # 把舊位置設成沒有東西
+                # board_role[i][j] = -1
+                # 利用move來幫我做走的邏輯判斷
+                move(i, j, mini, minj)
+                # 把選取清空
                 chosen = None
+            # 如果沒有選取, 更新選取
+            else:
+                # 如果你算出的位置有棋子, 就要有選取框
+                if not board_role[mini][minj] == -1:
+                    r, s = board_role[mini][minj]
+                    # 看回合來決定是否可以選取
+                    if s == round % 2:
+                        chosen = minpos
+
             draw_board()
         # 如果收到的事件是按x
         if event.type == pg.QUIT:
