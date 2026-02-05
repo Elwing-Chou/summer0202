@@ -15,6 +15,8 @@ FONT_UI = get_font(32)
 width, height = 800, 880
 dif = 80
 
+# 現在被選擇的棋子(None: 無)([i, j])
+chosen = [0, 0]
 # 準備我棋盤上每個位置對應的座標
 board_coord = [[-1] * 9 for i in range(10)]
 for i in range(10):
@@ -113,6 +115,11 @@ for i in range(10):
             t = FONT_UI.render(role[r][side], 1, fc)
             # 背景(bg)上面疊上t
             bg.blit(t, t.get_rect(center=[x, y]))
+
+# 劃出選取框(背景 顏色 [左上x 左上y 寬度 高度] 畫筆粗細)
+i, j = chosen
+cx, cy = board_coord[i][j]
+pg.draw.rect(bg, [0, 255, 0], [cx-35, cy-35, 70, 70], 2)
 
 screen.blit(bg, [0, 0])
 # 對畫面進行更新(才會真的秀出來)
