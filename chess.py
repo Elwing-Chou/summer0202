@@ -49,6 +49,25 @@ board_role[0][6] = [2, 0]
 board_role[9][2] = [2, 1]
 board_role[9][6] = [2, 1]
 
+board_role[0][1] = [3, 0]
+board_role[0][7] = [3, 0]
+board_role[9][1] = [3, 1]
+board_role[9][7] = [3, 1]
+
+board_role[0][0] = [4, 0]
+board_role[0][8] = [4, 0]
+board_role[9][0] = [4, 1]
+board_role[9][8] = [4, 1]
+
+board_role[2][1] = [5, 0]
+board_role[2][7] = [5, 0]
+board_role[7][1] = [5, 1]
+board_role[7][7] = [5, 1]
+
+for i in range(5):
+    board_role[3][2*i] = [6, 0]
+    board_role[6][2*i] = [6, 1]
+
 # 產生視窗
 screen = pg.display.set_mode([width, height])
 # 設定遊戲標題
