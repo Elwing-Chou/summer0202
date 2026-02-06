@@ -2,7 +2,23 @@ import urllib.request as req
 import json
 import os
 import pandas as pd
+import bs4 as bs
 
+url = "https://ani.gamer.com.tw/animeVideo.php?sn=36632"
+h = {
+    "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
+
+}
+r = req.Request(url, headers=h)
+resp = req.urlopen(r)
+html = bs.BeautifulSoup(resp)
+for a in html.find_all("a"):
+    href = a["href"]
+    if href.startswith("?sn"):
+        fullurl = "https://ani.gamer.com.tw/animeVideo.php" + href
+        print(fullurl)
+
+# 下載一集的danmu
 name = "baha/吉伊卡哇"
 # 如果資料夾不存在, make起來
 if not os.path.exists(name):
